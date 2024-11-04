@@ -19,19 +19,31 @@ require("lazy").setup({
     "NvChad/NvChad",
     lazy = false,
     branch = "v2.5",
-    import = "nvchad.plugins",
+    import = "nvchad.plugins", cond = (function() return not vim.g.vscode end) ,
+    -- disable some unwantted plugins manually.
+    -- specs =   {
+    --   "hrsh7th/nvim-cmp",
+    --   enabled=false,
+    -- },
   },
 
-  { import = "plugins" },
+  { import = "plugins"}
 }, lazy_config)
 
 -- load theme
-dofile(vim.g.base46_cache .. "defaults")
-dofile(vim.g.base46_cache .. "statusline")
+if not vim.g.vscode then
+  dofile(vim.g.base46_cache .. "defaults")
+  dofile(vim.g.base46_cache .. "statusline")
+  require "options"
+  require "nvchad.autocmds"
 
-require "options"
-require "nvchad.autocmds"
-
-vim.schedule(function()
-  require "mappings"
-end)
+  vim.schedule(function()
+    require "mappings_nvchad"
+    require "mappings_ink"
+  end)
+else
+  vim.schedule(function()
+    require "mappings_ink"
+    require "mappings_for_vscode"
+  end)
+end
