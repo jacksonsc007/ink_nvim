@@ -20,7 +20,7 @@ end
 o.scrolloff = 999
 
 -- relative line number
-o.relativenumber = true
+o.relativenumber = false
 
 -- disable system clipboard
 o.clipboard = ""

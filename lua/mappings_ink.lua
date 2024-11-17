@@ -3,6 +3,11 @@
 -------------------------------------
 local map = vim.keymap.set
 
+
+-- system copy and past
+map("n", "<leader>p", '"+p')
+map("v", "<leader>y", '"+y')
+
 -- unmap the default key in nvchad
 local unmap = vim.api.nvim_del_keymap
 -- unmap('n', '<C-j>')
@@ -88,8 +93,8 @@ local ls = require("luasnip")
 -- vim.api.nvim_set_keymap("i", "<Tab>", "<cmd>lua require'luasnip'.expand_or_jump()<CR>", {silent = true, noremap = true})
 -- vim.api.nvim_set_keymap("s", "<Tab>", "<cmd>lua require'luasnip'.expand_or_jump()<CR>", {silent = true, noremap = true})
 -- vim.keymap.set({"i"}, "<C-K>", function() ls.expand() end, {silent = true})
--- vim.keymap.set({"i", "s"}, "<leader>j", function() ls.jump( 1) end, {silent = true})
--- vim.keymap.set({"i", "s"}, "<leader>k", function() ls.jump(-1) end, {silent = true})
+vim.keymap.set({"i", "s"}, "<Ctrl-l>", function() ls.jump( 1) end, {silent = true})
+vim.keymap.set({"i", "s"}, "<Ctrl-h>", function() ls.jump(-1) end, {silent = true})
 
 -- vim.keymap.set({"i", "s"}, "<C-E>", function()
 -- 	if ls.choice_active() then
@@ -98,7 +103,7 @@ local ls = require("luasnip")
 -- end, {silent = true})
 
 -- Extend LaTeX snippets to markdown
-ls.filetype_extend("markdown", {"tex"})
+-- ls.filetype_extend("markdown", {"tex"})
 
 ----------------------------------
 --- session manager plugin setting
@@ -127,29 +132,44 @@ vim.api.nvim_create_autocmd({ 'BufWritePre' }, {
 })
 
 
--- snippet test
-local s = ls.snippet
-local t = ls.text_node
-local i = ls.insert_node
+----------------------------------
+--- Bmessages
+----------------------------------
+-- show live messages supported by bmessages plugins
+map("n", "<leader>ms", "<cmd>lua require('bmessages').toggle({ split_type = 'vsplit' })<CR>")
 
-ls.add_snippets("python", {
-      s("debug_snippet", {
-          t({"debug=True", ""}),
-          t({"if debug:", ""}),
-          t({"    # Improve torch tensor printing", ""}),
-          t({"    import torch", ""}),
-          t({"    def custom_repr(self):", ""}),
-          t({"        return f'{Tensor:{tuple(self.shape)}} {original_repr(self)}'", ""}),
-          t({"    original_repr = torch.Tensor.__repr__", ""}),
-          t({"    torch.Tensor.__repr__ = custom_repr", ""}),
-          t({"", ""}),
-          t({"    # Debug with debugpy", ""}),
-          t({"    import debugpy", ""}),
-          t({"    # Listen on a specific port (choose any available port, e.g., 61074)", ""}),
-          t({"    debugpy.listen(('0.0.0.0', 61074))", ""}),
-          t({"    print('Waiting for debugger to attach...')", ""}),
-          t({"    # Optional: Wait for the debugger to attach before continuing execution", ""}),
-          t({"    debugpy.wait_for_client()", ""}),
-      }),
-})
 
+
+----------------------------------
+--- Telescope mapping
+----------------------------------
+-- map({"i"}, "<Ctrl-j>", "<cmd>lua require('telescope.actions').move_selection_next()<CR>")
+-- map({"i"}, "<Ctrl-k>", "<cmd>lua require('telescope.actions').move_selection_previous()<CR>")
+require('telescope').setup{
+  defaults = {
+    -- Default configuration for telescope goes here:
+    -- config_key = value,
+    mappings = {
+      i = {
+        ["<C-j>"] = "move_selection_next",
+        ["<C-k>"] = "move_selection_previous",
+      }
+    }
+  },
+  pickers = {
+    -- Default configuration for builtin pickers goes here:
+    -- picker_name = {
+    --   picker_config_key = value,
+    --   ...
+    -- }
+    -- Now the picker_config_key will be applied every time you call this
+    -- builtin picker
+  },
+  extensions = {
+    -- Your extension configuration goes here:
+    -- extension_name = {
+    --   extension_config_key = value,
+    -- }
+    -- please take a look at the readme of the extension you want to configure
+  }
+}

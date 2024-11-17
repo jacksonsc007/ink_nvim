@@ -17,9 +17,14 @@ local get_visual = function(args, parent)
   end
 end
 
+local md = require('util.markdown_ink')
+
 return {
   s({ trig = "ii", snippetType = "autosnippet" }, fmta("$<>$", i(1))),
   s({ trig = "dd", snippetType = "autosnippet" }, fmta("$$\n<>\n$$", i(1))),
-  s({ trig = "bf", snippetType = "snippet" }, fmta("\\mathbf{<>}", i(1))),
+  s({ trig = "bf", snippetType = "snippet", }, fmta("\\mathbf{<>}", i(1))),
   s({ trig = "\\=", snippetType = "autosnippet" }, fmta("&=&<>", i(1))),
+  s({ trig = "sin", snippetType = "autosnippet" }, {
+    t("\\sin"),
+  }, {condition = md.in_math_env}),
 }

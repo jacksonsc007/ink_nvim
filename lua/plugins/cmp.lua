@@ -58,10 +58,10 @@ return {
 
       -- original com-path does not support windows-style path, we opt to com-async-path
       opts.sources = cmp.config.sources(vim.list_extend(opts.sources, {
-        { name = "nvim_lsp" },
-        { name = "luasnip" },
-        { name = "buffer" },
-        { name = "nvim_lua" },
+        -- { name = "nvim_lsp" },
+        -- { name = "luasnip" },
+        -- { name = "buffer" },
+        -- { name = "nvim_lua" },
         { name = "async_path" },
       }))
 
